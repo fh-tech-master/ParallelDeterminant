@@ -13,7 +13,7 @@ int minus_1_power_n(int n) {
     return n % 2 == 0 ? 1 : -1;
 }
 
-int determinantSerial(const Matrix &matrix, int dimension) {
+int determinantSequential(const Matrix &matrix, int dimension) {
 
     if (dimension == 2) {
         return two_by_two_determinant(matrix);
@@ -34,8 +34,10 @@ int determinantSerial(const Matrix &matrix, int dimension) {
             }
         }
 
-        determinant = determinant + (matrix[0][i] * minus_1_power_n(0 + i + 2) *
-                                     determinantSerial(smallMatrix, dimension - 1));
+        if (matrix[0][i] != 0) {
+            determinant = determinant + (matrix[0][i] * minus_1_power_n(0 + i + 2) *
+                                         determinantSequential(smallMatrix, dimension - 1));
+        }
     }
 
     return determinant;
@@ -68,11 +70,12 @@ int determinantParallel(const Matrix &matrix, int dimension, int threshold) {
                         }
                     }
 
-                    int result = matrix[0][i] * minus_1_power_n(0 + i + 2) *
-                                 determinantSerial(smallMatrix, dimension - 1);
-
+                    if (matrix[0][i] != 0) {
+                        int result = matrix[0][i] * minus_1_power_n(0 + i + 2) *
+                                     determinantParallel(smallMatrix, dimension - 1, threshold);
 #pragma omp critical
-                    determinant = determinant + result;
+                        determinant = determinant + result;
+                    }
                 }
             }
         }
@@ -90,50 +93,45 @@ int determinantParallel(const Matrix &matrix, int dimension, int threshold) {
                 }
             }
 
-            determinant = determinant + (matrix[0][i] * minus_1_power_n(0 + i + 2) *
-                                         determinantSerial(smallMatrix, dimension - 1));
+            if (matrix[0][i] != 0) {
+                determinant = determinant + (matrix[0][i] * minus_1_power_n(0 + i + 2) *
+                                             determinantSequential(smallMatrix, dimension - 1));
+            }
         }
     }
 
     return determinant;
 }
 
-void execSerial(const Matrix &matrix, int dimension) {
-    auto t1 = std::chrono::high_resolution_clock::now();
-    int determinant = determinantSerial(matrix, dimension);
-    auto t2 = std::chrono::high_resolution_clock::now();
-    printf("determinant serial = %d and took %d ms\n", determinant,
-           std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count());
-}
-
-void execParallel(const Matrix &matrix, int dimension, int threshold) {
-    auto t1 = std::chrono::high_resolution_clock::now();
-    int determinant = determinantParallel(matrix, dimension, threshold);
-    auto t2 = std::chrono::high_resolution_clock::now();
-//    printf("determinant parallel = %d and took %d ms\n", determinant, std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count());
-}
-
 double avgTimeMsSerial(int iterations, int dimension, const Matrix &matrix) {
     double sumMs = 0;
+    std::cout << "starting sequential iterations" << std::endl;
+
     for (int i = 0; i < iterations; i++) {
+        std::cout << "sequential iteration " << i+1 << std::endl;
         auto t1 = std::chrono::high_resolution_clock::now();
-        int determinant = determinantSerial(matrix, dimension);
+        int determinant = determinantSequential(matrix, dimension);
         auto t2 = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = t2 - t1;
         sumMs += duration.count();
     }
+    std::cout << "sequential iterations done " << sumMs / iterations << "ms" << std::endl;
     return sumMs / iterations;
 }
 
 double avgTimeMsParallel(int iterations, int dimension, const Matrix &matrix, int threshold) {
     double sumMs = 0;
+    std::cout << "starting parallel iterations with threshold " << threshold << std::endl;
+
     for (int i = 0; i < iterations; i++) {
+        std::cout << "parallel iteration " << i+1 << std::endl;
         auto t1 = std::chrono::high_resolution_clock::now();
         int determinant = determinantParallel(matrix, dimension, threshold);
         auto t2 = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> duration = t2 - t1;
         sumMs += duration.count();
     }
+    std::cout << "parallel iterations done " << sumMs / iterations << "ms" << std::endl;
     return sumMs / iterations;
 }
 
