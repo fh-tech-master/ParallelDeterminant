@@ -30,7 +30,7 @@ We took the average of 10 executions for a 12-dimensional matrix for the thresho
 with the speed of the sequential solution (also average of 10 executions for 12-dimensional).
 This allowed us to create the following graph:
 
-![executionTime](executionTimeparallelThresholds.png "executionTime")
+![executionTime](executionTimeParallelThresholds.png "executionTime")
 
 As we can see the fastest execution was reached by setting the threshold to 4.
 
