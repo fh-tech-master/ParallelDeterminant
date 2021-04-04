@@ -6,6 +6,9 @@ We decided to implement **Laplace's expansion theorem** as it can compute the de
 Laplace's theorem has a complexity of **O(n!)** therefore we can not test our solution with very big dimensions, unless we wait very long.
 One alternative would have been to use the Gaussian elimination algorithm which has better complexity, approximately **0(n^3)**.
 
+## Hardware
+Intel i7-9750H @2.6GHz; 6 physical cores/12 logical cores
+
 ## Test Data
 We calculate the determinant for a **12-dimensional** matrix.
 
