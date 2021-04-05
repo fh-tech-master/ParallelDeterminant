@@ -6,6 +6,10 @@ We decided to implement **Laplace's expansion theorem** as it can compute the de
 Laplace's theorem has a complexity of **O(n!)** therefore we can not test our solution with very big dimensions, unless we wait very long.
 One alternative would have been to use the Gaussian elimination algorithm which has better complexity, with approximately **0(n^3)**, but can not be parallelized as good as the laplace expansion theorem.
 
+![Laplace's expansion theorem formula](https://cdn.discordapp.com/attachments/764518634457530373/827820565611544586/unknown.png)
+
+![Laplace's expansion theorem example](https://lh3.googleusercontent.com/proxy/5nKwmnwvpg_41x2m-ODA80NWGUNCxUizMMgBAtQT9YCK2HUIEYP5id_ST2qEjKKgccQxxq446KXbKXbH4ejISb3g2S3S5xXA5sw6DhAGTVKi5ZU)
+
 ## Hardware
 Intel i7-9750H @2.6GHz; 6 physical cores/12 logical cores
 
