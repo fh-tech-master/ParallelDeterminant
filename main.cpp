@@ -136,8 +136,8 @@ double avgTimeMsParallel(int iterations, int dimension, const Matrix &matrix, in
 }
 
 int main() {
-    int dimensions = 12;
-    int thresholds[] = {3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    int dimensions = 11;
+    int thresholds[] = {3, 4, 5, 6, 7, 8, 9, 10, 11};
 
     Matrix matrix;
 
@@ -147,17 +147,22 @@ int main() {
         }
     }
 
+//    speed serial
+//    auto s = avgTimeMsSerial(10, dimensions, matrix);
+//    speed parallel
+    auto sP = avgTimeMsParallel(10, dimensions, matrix, 0);
+
 //  comparing performance for [dimensions] dimensions with different thresholds
-    const int numberOfRunsPerDimension = 10;
-    std::ofstream csv;
-    csv.open ("performance.csv");
-    csv  << "threshold, execution time (ms), speedup" << std::endl;
-    auto speedSerial = avgTimeMsSerial(numberOfRunsPerDimension, dimensions, matrix);
-    for (auto threshold : thresholds) {
-        auto speedParallel = avgTimeMsParallel(numberOfRunsPerDimension, dimensions, matrix, threshold);
-        csv << threshold << "," << speedParallel << "," << speedSerial/speedParallel << std::endl;
-    }
-    csv.close();
+//    const int numberOfRunsPerDimension = 10;
+//    std::ofstream csv;
+//    csv.open ("performance.csv");
+//    csv  << "threshold, execution time (ms), speedup" << std::endl;
+//    auto speedSerial = avgTimeMsSerial(numberOfRunsPerDimension, dimensions, matrix);
+//    for (auto threshold : thresholds) {
+//        auto speedParallel = avgTimeMsParallel(numberOfRunsPerDimension, dimensions, matrix, threshold);
+//        csv << threshold << "," << speedParallel << "," << speedSerial/speedParallel << std::endl;
+//    }
+//    csv.close();
 
     return 0;
 }

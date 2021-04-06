@@ -14,33 +14,39 @@ One alternative would have been to use the Gaussian elimination algorithm which 
 Intel i7-9750H @2.6GHz; 6 physical cores/12 logical cores
 
 ## Test Data
-We calculate the determinant for a **12-dimensional** matrix.
+We calculate the determinant for a **11-dimensional** matrix.
 
 ## Speed Sequential Solution
-Average Speed of 10 runs with the Test Data: **4905.72ms** or **4.91s**.
+Average Speed of 10 runs with the Test Data: **454.45ms**.
 
 ## Speed Naive Parallel Solution 
-Average Speed of 10 runs with the Test Data: **5101.58ms** or **5.1s**.
+Average Speed of 10 runs with the Test Data: **56450.4ms** or **56.45s**.  
+That is **124.22** times slower than the sequential solution.
 
 After implementing our parallel solution via OpenMP's Tasks and playing around with it a bit it quickly became clear that the naive parallel solution
-is slower than the sequential solution even. Creating a task for every Sub-Matrix
+is slower than the sequential solution (by a lot). Creating a task for every Sub-Matrix
 leads to **Over-Subscription** which in turn makes our solution slower(just like in ParallelSort).
 
 ## Thresholds
 To solve the problem of **Over-Subscription** we decided to set thresholds. In our case we want to start executing sequentially as soon as we hit a certain dimension of the matrix.
 As the termination condition of our recursion is reaching two dimensions (as we can calculate the determinant easily with **a * d - c * b**) the **smallest threshold** 
 that would make any difference is **3**.
-As we test with 12 dimensions the **largest threshold** making sense (to still compute anything in parallel) is **12**.
+As we test with 11 dimensions the **largest threshold** making sense (to still compute anything in parallel) is **11**.
 
 ## Speed with Thresholds
-We took the average of 10 executions for a 12-dimensional matrix for the thresholds from 3-12 and wrote the results to a csv. We also compared the speed for each threshold
-with the speed of the sequential solution (also average of 10 executions for 12-dimensional).
+We took the average of 10 executions for a 11-dimensional matrix for the thresholds from 3-11 and wrote the results to a csv. We also compared the speed for each threshold
+with the speed of the sequential solution (also average of 10 executions for 11-dimensional).
 This allowed us to create the following graph:
 
 ![executionTime](executionTimeParallelThresholds.png "executionTime")
 
-As we can see the fastest execution was reached by setting the threshold to 4.
+As the difference in execution time is so large we look at the graph for threshold 6-11 explicitly:
+
+![executionTime](executionTimeParallelThresholdsExact.png "executionTime")
+
+Now we see that the fastest execution time was reached with a threshold of 11. Which makes sense as it creates 10 Tasks for the Sub-Matrices which leads
+to the least Over-Subscription.
 
 ![executionTime](speedupParallelThresholds.png "speedup")
 
-Again we see that the speedup at threshold 4 is best after that it rapidly declines but seems to rise slightly at 11.
+Again we see that the speedup at threshold 11 is best..
