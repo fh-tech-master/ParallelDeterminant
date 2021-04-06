@@ -8,7 +8,9 @@ One alternative would have been to use the Gaussian elimination algorithm which 
 
 ![Laplace's expansion theorem formula](https://cdn.discordapp.com/attachments/764518634457530373/827820565611544586/unknown.png)
 
-![Laplace's expansion theorem example](https://lh3.googleusercontent.com/proxy/5nKwmnwvpg_41x2m-ODA80NWGUNCxUizMMgBAtQT9YCK2HUIEYP5id_ST2qEjKKgccQxxq446KXbKXbH4ejISb3g2S3S5xXA5sw6DhAGTVKi5ZU)
+![Laplace's expansion theorem example](laplace_example_2.png)
+
+![Laplace's expansion theorem example](laplace_example.png)
 
 ## Hardware
 Intel i7-9750H @2.6GHz; 6 physical cores/12 logical cores
